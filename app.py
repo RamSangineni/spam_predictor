@@ -4,6 +4,8 @@ import re
 import nltk
 import joblib
 from nltk.stem import PorterStemmer
+import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 import sklearn
 from sklearn.feature_extraction.text import TfidfVectorizer
