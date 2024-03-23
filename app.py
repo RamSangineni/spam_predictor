@@ -7,12 +7,30 @@ from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 import sklearn
 from sklearn.feature_extraction.text import TfidfVectorizer
+import requests
+from io import BytesIO
 
-# Load the trained model
-model = joblib.load(r"C:\Users\laksh\Downloads\Spam_detector_project\Bernouli_Model.pkl")
+# Function to fetch model from GitHub
+def fetch_model_from_github(model_url):
+    response = requests.get(model_url)
+    model_bytes = BytesIO(response.content)
+    model = joblib.load(model_bytes)
+    return model
 
-# Load TF-IDF
-tfidf = joblib.load(r"C:\Users\laksh\Downloads\Spam_detector_project\TFIDF_vectorizer.pkl")
+# Function to fetch TF-IDF vectorizer from GitHub
+def fetch_vectorizer_from_github(vectorizer_url):
+    response = requests.get(vectorizer_url)
+    vectorizer_bytes = BytesIO(response.content)
+    vectorizer = joblib.load(vectorizer_bytes)
+    return vectorizer
+
+# Load the trained model from GitHub
+model_url = "https://github.com/RamSangineni/spam_predictor/raw/main/Bernouli_Model.pkl"
+model = fetch_model_from_github(model_url)
+
+# Load TF-IDF vectorizer from GitHub
+vectorizer_url = "https://github.com/RamSangineni/spam_predictor/raw/main/TFIDF_vectorizer.pkl"
+tfidf = fetch_vectorizer_from_github(vectorizer_url)
 
 # Function to remove special characters and punctuation
 def cleaning_text(text):
